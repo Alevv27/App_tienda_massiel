@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://<tu-usuario>.github.io/<tu-repo>/"
+    private const val BASE_URL = "https://alevv27.github.io/massiel-api/"
 
     fun api(): ApiService {
         val log = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
