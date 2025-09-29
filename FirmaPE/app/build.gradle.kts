@@ -64,4 +64,7 @@ dependencies {
 
     // DataStore para sesión simple
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    //Agregar pdf
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
 }

@@ -60,6 +60,7 @@ fun AhorraTiempoCard() {
 fun HomeScreen(
     user: Usuario,
     onGoDocs: (String?) -> Unit,
+    onGoUpload: () -> Unit,//navegar en subir documento
     onLogout: () -> Unit = {}
 ) {
     Box(
@@ -92,7 +93,7 @@ fun HomeScreen(
             Spacer(Modifier.height(24.dp))
 
             // Gestión
-            MenuCard("Gestión Documentos") { onGoDocs(null) }
+            MenuCard("Gestión Documentos") {  onGoUpload() }//lleva directo a subir documento
             Spacer(Modifier.height(12.dp))
 
             // Firmar

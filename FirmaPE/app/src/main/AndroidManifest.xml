@@ -25,6 +25,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--
+        FileProvider: Permite compartir archivos de la app con otras aplicaciones
+        de manera segura (usando content:// en lugar de file://).
+        Configura la autoridad con el applicationId y enlaza al archivo @xml/file_paths
+        que define qué directorios/archivos se pueden exponer.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" /><!--guardar el archivo -->
+        </provider>
     </application>
 
 </manifest>

@@ -8,16 +8,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.massiel.firmape.data.model.Usuario
+import com.massiel.firmape.ui.screen.docs.DocsScreen
+import com.massiel.firmape.ui.screen.docs.UploadLocalScreen
 import com.massiel.firmape.ui.screen.login.LoginScreen
 import com.massiel.firmape.ui.screen.home.HomeScreen
-import com.massiel.firmape.ui.screen.docs.DocsScreen
 import com.massiel.firmape.ui.theme.FirmaPETheme
-
-sealed interface Routes {
-    data object Login: Routes
-    data class Home(val user:Usuario): Routes
-    data class Docs(val user:Usuario, val estado:String?): Routes
-}
 
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,13 +36,24 @@ fun AppNav() {
             val u = user ?: return@composable
             HomeScreen(
                 user = u,
-                onGoDocs = { estado -> nav.navigate("docs/${estado ?: "ALL"}") }
+                onGoDocs = { estado -> nav.navigate("docs/${estado ?: "ALL"}") },
+                onGoUpload = { nav.navigate("uploadLocal") },     //  navega directo a subir documento
             )
         }
+
         composable("docs/{estado}") { backStack ->
             val estadoArg = backStack.arguments?.getString("estado")?.let { if (it=="ALL") null else it }
             val u = user ?: return@composable
-            DocsScreen(user = u, estado = estadoArg)
+            DocsScreen(
+                onUpload = { nav.navigate("uploadLocal") },
+                signerName = u.nombre,// 👈 pasa el nombre real
+                estado = estadoArg
+            )
         }
+        //para
+        composable("uploadLocal") {
+            UploadLocalScreen(onDone = { nav.popBackStack() })          // navegamos en subir documento
+        }
+
     }
 }
