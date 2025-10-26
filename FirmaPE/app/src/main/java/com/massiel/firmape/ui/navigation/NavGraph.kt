@@ -45,6 +45,7 @@ fun AppNav() {
             val estadoArg = backStack.arguments?.getString("estado")?.let { if (it=="ALL") null else it }
             val u = user ?: return@composable
             DocsScreen(
+                navController = nav,
                 onUpload = { nav.navigate("uploadLocal") },
                 signerName = u.nombre,// 👈 pasa el nombre real
                 estado = estadoArg
