@@ -9,22 +9,26 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 data class LoginState(
-    val loading:Boolean=false,
+    val loading: Boolean = false,
     val user: Usuario? = null,
-    val error:String? = null
+    val error: String? = null
 )
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase = LoginUseCase()
-): ViewModel() {
+) : ViewModel() {
+
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state
 
-    fun login(email:String, pass:String) {
-        _state.value = _state.value.copy(loading=true, error=null)
+    fun login(email: String, pass: String) {
+        _state.value = LoginState(loading = true)
         viewModelScope.launch {
-            val user = loginUseCase(email, pass)
-            _state.value = if (user!=null) LoginState(user=user) else LoginState(error="Credenciales inválidas")
+            val result = loginUseCase(email, pass)
+            _state.value = result.fold(
+                onSuccess = { LoginState(user = it) },
+                onFailure = { LoginState(error = it.message ?: "Error de login") }
+            )
         }
     }
 }

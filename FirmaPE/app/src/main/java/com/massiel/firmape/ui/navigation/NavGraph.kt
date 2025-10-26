@@ -1,4 +1,5 @@
 package com.massiel.firmape.ui.navigation
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.NavType
 import com.massiel.firmape.data.model.Usuario
 import com.massiel.firmape.ui.screen.docs.DocsScreen
 import com.massiel.firmape.ui.screen.docs.UploadLocalScreen
@@ -17,7 +20,11 @@ import com.massiel.firmape.ui.theme.FirmaPETheme
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { FirmaPETheme { AppNav() } }
+        setContent {
+            FirmaPETheme {
+                AppNav()
+            }
+        }
     }
 }
 
@@ -27,34 +34,56 @@ fun AppNav() {
     var user by remember { mutableStateOf<Usuario?>(null) }
 
     NavHost(navController = nav, startDestination = "login") {
+
+        // 🔹 Pantalla Login
         composable("login") {
             LoginScreen(
-                onSuccess = { u -> user = u; nav.navigate("home") { popUpTo("login"){ inclusive=true } } }
+                onSuccess = { u ->
+                    user = u
+                    // Pasamos a Home y eliminamos el login del back stack
+                    nav.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
             )
         }
+
+        // 🔹 Pantalla Home
         composable("home") {
             val u = user ?: return@composable
             HomeScreen(
                 user = u,
                 onGoDocs = { estado -> nav.navigate("docs/${estado ?: "ALL"}") },
-                onGoUpload = { nav.navigate("uploadLocal") },     //  navega directo a subir documento
+                onGoUpload = { nav.navigate("uploadLocal") },
+                onLogout = {
+                    user = null
+                    nav.navigate("login") { popUpTo("home") { inclusive = true } }
+                }
             )
         }
 
-        composable("docs/{estado}") { backStack ->
-            val estadoArg = backStack.arguments?.getString("estado")?.let { if (it=="ALL") null else it }
+        // 🔹 Pantalla Documentos
+        composable(
+            route = "docs/{estado}",
+            arguments = listOf(
+                navArgument("estado") { type = NavType.StringType }
+            )
+        ) { backStack ->
+            val estadoArg = backStack.arguments?.getString("estado")?.let { if (it == "ALL") null else it }
             val u = user ?: return@composable
             DocsScreen(
-                navController = nav,
-                onUpload = { nav.navigate("uploadLocal") },
-                signerName = u.nombre,// 👈 pasa el nombre real
-                estado = estadoArg
+                navController = nav,            // 👈 agrega esto
+                estado = estadoArg,
+                signerName = u.nombre,
+                onUpload = { nav.navigate("uploadLocal") }
             )
         }
-        //para
-        composable("uploadLocal") {
-            UploadLocalScreen(onDone = { nav.popBackStack() })          // navegamos en subir documento
-        }
 
+        // 🔹 Pantalla Subir Documento
+        composable("uploadLocal") {
+            UploadLocalScreen(
+                onDone = { nav.popBackStack() }
+            )
+        }
     }
 }
