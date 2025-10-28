@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     // Emulador:
-    private const val BASE_URL = "http://10.0.2.2:5000/"
+    private const val BASE_URL = "http://127.0.0.1:5000/"
     // Dispositivo físico: "http://<IP_DE_TU_PC>:5000/"
 
     fun api(): ApiService {
