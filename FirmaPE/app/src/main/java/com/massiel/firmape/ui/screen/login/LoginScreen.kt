@@ -12,14 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.text.font.FontWeight
 import com.massiel.firmape.R
-
-
+import androidx.compose.foundation.border
 
 
 
@@ -114,8 +112,8 @@ fun LoginScreen(
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Black,
                 unfocusedLabelColor = Color.Black,
-                focusedIndicatorColor = Color.Transparent,   // 👈 línea invisible
-                unfocusedIndicatorColor = Color.Transparent  // 👈 línea invisible
+                focusedIndicatorColor = Color.Transparent,   //
+                unfocusedIndicatorColor = Color.Transparent  //
             )
 
         )
@@ -148,8 +146,8 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 5.dp, horizontal = 9.dp)
-                .background(Color.White, shape = RoundedCornerShape(10.dp)),
-            shape = RoundedCornerShape(10.dp),
+                .background(Color.White, shape = RoundedCornerShape(16.dp)),
+            shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black,
@@ -157,8 +155,8 @@ fun LoginScreen(
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Color.Black,
                 unfocusedLabelColor = Color.Black,
-                focusedIndicatorColor = Color.Transparent,   // 👈 línea invisible
-                unfocusedIndicatorColor = Color.Transparent  // 👈 línea invisible
+                focusedIndicatorColor = Color.Transparent,   //
+                unfocusedIndicatorColor = Color.Transparent  //
             )
 
         )
@@ -186,6 +184,57 @@ fun LoginScreen(
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.2f
                 )
             )
+        }
+
+        Spacer(Modifier.height(20.dp))
+
+// Marcos (contornos) de Facebook e Instagram sin color de relleno
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // 🟦 Marco circular con la "f" (Facebook)
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(50)
+                    )
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "f",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
+
+            Spacer(Modifier.width(24.dp))
+
+            // Marco circular con símbolo de cámara (Instagram)
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(50)
+                    )
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "📷", // símbolo de cámara
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
         }
 
 
