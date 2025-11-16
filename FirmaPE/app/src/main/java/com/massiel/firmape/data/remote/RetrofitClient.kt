@@ -6,9 +6,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    // Emulador:
-    private const val BASE_URL = "http://127.0.0.1:5000/"
+    // Emulador local:
+    //private const val BASE_URL = "http://127.0.0.1:5000/"
     // Dispositivo físico: "http://<IP_DE_TU_PC>:5000/"
+    //Poduccion
+    private const val BASE_URL = "https://app-tienda-massiel-backen-prd.onrender.com/"
 
     fun api(): ApiService {
         val log = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
