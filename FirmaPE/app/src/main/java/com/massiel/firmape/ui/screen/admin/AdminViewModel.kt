@@ -47,7 +47,6 @@ class AdminViewModel : ViewModel() {
                 val pResp = api.getPerfiles()
                 val eResp = api.getEmpresas()
 
-                // Estas respuestas SÍ tienen ok + lista
                 if (uResp.ok) usuarios = uResp.usuarios
                 if (pResp.ok) perfiles = pResp.perfiles
                 if (eResp.ok) empresas = eResp.empresas
@@ -82,18 +81,53 @@ class AdminViewModel : ViewModel() {
                     empresa_id = empresaId
                 )
 
-                // En tu ApiService, esto devuelve Usuario, no un wrapper
                 api.createUsuario(body)
 
-                // Mensaje de éxito
                 success = "Usuario creado"
 
-                // Recarga toda la data para que el nuevo usuario
-                // aparezca inmediatamente con todos sus datos
+                // recargar para ver todo actualizado
                 loadAll()
 
             } catch (e: Exception) {
                 error = "Error al crear usuario: ${e.message}"
+            } finally {
+                loading = false
+            }
+        }
+    }
+
+    // ==================== ACTUALIZAR USUARIO (EDITAR) ====================
+    fun updateUsuario(
+        id: Long,
+        nombre: String,
+        email: String,
+        password: String?,
+        perfilId: Int,
+        empresaId: Int
+    ) {
+        viewModelScope.launch {
+            try {
+                loading = true
+                error = null
+                success = null
+
+                val body = UsuarioUpdateRequest(
+                    nombre = nombre,
+                    email = email,
+                    password = password?.takeIf { it.isNotBlank() }, // si viene vacío, no se manda
+                    perfil_id = perfilId,
+                    empresa_id = empresaId
+                )
+
+                api.updateUsuario(id, body)
+
+                success = "Usuario actualizado"
+
+                // recargamos todo para ver cambios
+                loadAll()
+
+            } catch (e: Exception) {
+                error = "Error al actualizar usuario: ${e.message}"
             } finally {
                 loading = false
             }
@@ -115,7 +149,6 @@ class AdminViewModel : ViewModel() {
 
                 success = if (!current) "Usuario activado" else "Usuario desactivado"
 
-                // Refrescamos lista desde backend
                 loadAll()
 
             } catch (e: Exception) {
@@ -138,7 +171,6 @@ class AdminViewModel : ViewModel() {
 
                 success = "Usuario eliminado"
 
-                // Refrescamos lista completa
                 loadAll()
 
             } catch (e: Exception) {
