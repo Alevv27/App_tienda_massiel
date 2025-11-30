@@ -61,6 +61,7 @@ fun HomeScreen(
     user: Usuario,
     onGoDocs: (String?) -> Unit,
     onGoUpload: () -> Unit,//navegar en subir documento
+    onGoAdmin: () -> Unit,      // 👈 NUEVO
     onLogout: () -> Unit = {}
 ) {
     Box(
@@ -104,7 +105,7 @@ fun HomeScreen(
 
             // Administración
             if (user.perfil == "ADMIN") {
-                MenuCard("Administración") {}
+                MenuCard("Administración") { onGoAdmin()}
             }
         }
 

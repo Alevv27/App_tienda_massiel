@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
 import com.massiel.firmape.data.model.Usuario
+import com.massiel.firmape.ui.screen.admin.AdminScreen
 import com.massiel.firmape.ui.screen.docs.DocsScreen
 import com.massiel.firmape.ui.screen.docs.UploadLocalScreen
 import com.massiel.firmape.ui.screen.login.LoginScreen
@@ -55,6 +56,7 @@ fun AppNav() {
                 user = u,
                 onGoDocs = { estado -> nav.navigate("docs/${estado ?: "ALL"}") },
                 onGoUpload = { nav.navigate("uploadLocal") },
+                onGoAdmin = { nav.navigate("admin") },// 👈 aquí navegamos al módulo administración
                 onLogout = {
                     user = null
                     nav.navigate("login") { popUpTo("home") { inclusive = true } }
@@ -85,5 +87,12 @@ fun AppNav() {
                 onDone = { nav.popBackStack() }
             )
         }
+        // 🔹 Pantalla Administración
+        composable("admin") {
+            AdminScreen(
+                onBack = { nav.popBackStack() }
+            )
+        }
+
     }
 }
